@@ -223,5 +223,17 @@
         "name": "Cuong hehehe",
         "duration": 5,
         "maxGroupSize": 25
+    },
+    {
+        "id": 12,
+        "name": "Cuong askjdhaksjd",
+        "duration": 15,
+        "maxGroupSize": 225
+    },
+    {
+        "id": 13,
+        "name": "Cuong askjdhaksjd",
+        "duration": 15,
+        "maxGroupSize": 225
     }
 ]
