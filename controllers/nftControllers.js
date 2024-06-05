@@ -1,43 +1,19 @@
 const NFT = require("../models/nftModel");
+const APIFeatures = require("../Utils/apiFeatures");
+
+//GET TOP 5
+exports.aliasTopNFTs = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = "-ratingsAverage,price";
+  req.query.fields = "name,price,ratingsAverage,difficulty";
+  next();
+}
 
 //GET REQUEST
 exports.getAllNfts = async (req, res) => {
   try {
-    const queryObj = { ...req.query };
-    const excludedFields = ["page", "sort", "limit", "fields"];
-    excludedFields.forEach((el) => delete queryObj[el]);
-
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    let query = NFT.find(JSON.parse(queryStr));
-
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(",").join(" ");
-      query = query.sort(sortBy);
-    } else {
-      query = query.sort("-createdAt");
-    }
-
-    if (req.query.fields) {
-      const fields = req.query.fields.split(",").join(" ");
-      query = query.select(fields);
-    } else {
-      query = query.select("-__V");
-    }
-
-    const nfts = await query;
-
-    // const nfts = await NFT.find({
-    //   difficulty: "easy",
-    //   // duration: 5,
-    // });
-
-    // const nfts = await NFT.find()
-    //   .where("duration")
-    //   .equals(5)
-    //   .where("difficulty")
-    //   .equals("easy");
+    const features = new APIFeatures(NFT.find(), req.query).filter().sort().limitFields().pagination();
+    const nfts = await features.query;
 
     res.status(200).json({
       status: "success",
