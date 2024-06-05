@@ -24,6 +24,8 @@ const nfts = JSON.parse(
   fs.readFileSync(`${__dirname}/nft-simple.json`, "utf-8")
 );
 
+console.log("check import success");
+
 //IMPORT DATA
 const importDate = async () => {
   try {
