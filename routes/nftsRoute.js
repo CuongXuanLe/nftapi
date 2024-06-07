@@ -25,7 +25,6 @@ router.route("/nfts-stats").get(getNFTsStats);
 router.route("/monthly-plan/:year").get(getMonthlyPlan);
 
 //CRUD ITEMS
-// router.route("/").get(getAllNfts).post(checkBody, createNFT);
 router.route("/").get(getAllNfts).post(createNFT);
 
 router.route("/:id").get(getSingleNFT).patch(updateNFT).delete(deleteNFT);

@@ -94,27 +94,12 @@ nftSchema.pre("save", function (next) {
   next();
 });
 
-// nftSchema.pre("save", function(next) {
-//     console.log("doc will be save ...");
-//     next();
-// });
-
-// nftSchema.post("save", function (doc, next) {
-//     console.log(doc);
-//     next();
-// })
-
 //query middleware
 nftSchema.pre(/^find/, function (next) {
   this.find({ secretNfts: { $ne: true } });
   this.start = Date.now();
   next();
 });
-
-// nftSchema.pre("findOne", function(next) {
-//     this.find({secretNfts: {$ne: true}})
-//     next();
-// });
 
 nftSchema.post(/^find/, function (doc, next) {
   console.log(`Query took time: ${Date.now() - this.start} times`);
@@ -125,7 +110,6 @@ nftSchema.post(/^find/, function (doc, next) {
 //Aggre middleware
 nftSchema.pre("aggregate", function (next) {
   this.pipeline().unshift({ $match: { secretNft: { $ne: true } } });
-  // console.log(this.pipeline());
   next();
 });
 
