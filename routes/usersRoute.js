@@ -1,8 +1,6 @@
 const express = require("express");
 
-const {
-  signup
-} = require("../controllers/authController");
+const { signup, login } = require("../controllers/authController");
 
 const {
   getAllUsers,
@@ -14,7 +12,8 @@ const {
 
 const router = express.Router();
 
-router.post("/signup", signup)
+router.post("/signup", signup);
+router.post("/login", login);
 
 //CRUD USERS
 router.route("/").get(getAllUsers).post(createUser);
