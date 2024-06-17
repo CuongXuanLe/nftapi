@@ -32,12 +32,12 @@ router.route("/nfts-stats").get(getNFTsStats);
 router.route("/monthly-plan/:year").get(getMonthlyPlan);
 
 //CRUD ITEMS
-router.route("/").get(protect, getAllNfts).post(createNFT);
+router.route("/").get(getAllNfts).post(protect, createNFT);
 
 router
   .route("/:id")
   .get(getSingleNFT)
-  .patch(updateNFT)
+  .patch(protect, updateNFT)
   .delete(protect, restrictTo("admin", "guide"), deleteNFT);
 
 module.exports = router;
