@@ -5,6 +5,8 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const cors = require('cors');
+
 
 const AppError = require("./Utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -12,6 +14,14 @@ const nftsRouter = require("./routes/nftsRoute");
 const usersRouter = require("./routes/usersRoute");
 
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], 
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use(express.json({ limit: "10kb" }));
 app.use(mongoSanitize());
 app.use(xss());
@@ -41,12 +51,6 @@ app.use(morgan("dev"));
 
 //SERVING TEMPLATE DEMO
 app.use(express.static(`${__dirname}/nft-data/img`));
-
-//CUSTOM MIDDLE WARE
-// app.use((req, res, next) => {
-//   console.log("Hey i am from middleware function");
-//   next();
-// });
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();

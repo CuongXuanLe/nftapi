@@ -24,9 +24,10 @@ mongoose
     console.log("DB Connection Successfully");
   });
 
+
 console.log("hehe", process.env.NODE_ENV);
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 5000;
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}....`);
 });

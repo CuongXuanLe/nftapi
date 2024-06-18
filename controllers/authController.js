@@ -177,7 +177,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-exports.userLogout = catchAsync(async (req, res) => {
+exports.logOut = catchAsync(async (req, res) => {
   res.clearCookie("refreshToken");
   refreshTokens = refreshTokens.filter(
     (token) => token !== req.cookies.refreshToken
