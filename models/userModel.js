@@ -21,6 +21,8 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin", "creator", "guide"],
     default: "user",
   },
+  description: String,
+  website: String,
   walletAddress: String,
   password: {
     type: String,
