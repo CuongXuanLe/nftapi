@@ -6,8 +6,6 @@ const AppError = require("../Utils/appError");
 const sendEmail = require("../Utils/email");
 const crypto = require("crypto");
 
-let refreshTokens = [];
-
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -68,11 +66,11 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!token) {
     return next(new AppError("You are not logged in to get access", 401));
   }
-
+  console.log("token", token);
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   console.log("decoded", decoded);
-  const currentUser = await User.findById(decoded.id);
 
+  const currentUser = await User.findById(decoded.id);
   if (!currentUser) {
     return next(
       new AppError("The User belonging to this token no longer exists", 401)
@@ -177,9 +175,10 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 });
 
 exports.logOut = catchAsync(async (req, res) => {
-  res.clearCookie("refreshToken");
-  refreshTokens = refreshTokens.filter(
-    (token) => token !== req.cookies.refreshToken
-  );
-  res.status(200).json("Logged out !");
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+
+  res.status(200).json({ status: "success", message: "Logged out!" });
 });
