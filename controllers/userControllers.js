@@ -27,10 +27,26 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     "email",
     "photo",
     "walletAddress",
+    "configWalletAddress",
     "website",
     "description"
   );
-  console.log("result", req.body);
+
+  // Check if configWalletAddress is unique
+  if (filteredBody.configWalletAddress) {
+    const existingUser = await User.findOne({
+      configWalletAddress: filteredBody.configWalletAddress,
+    });
+
+    if (existingUser && existingUser.id !== req.user.id) {
+      return next(
+        new AppError(
+          "This configWalletAddress is already in use by another account.",
+          400
+        )
+      );
+    }
+  }
   const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,

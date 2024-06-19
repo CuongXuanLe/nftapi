@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
   },
   description: String,
   website: String,
+  configWalletAddress: {
+    type: String,
+    unique: true,
+  },
   walletAddress: String,
   password: {
     type: String,
