@@ -23,11 +23,8 @@ const userSchema = new mongoose.Schema({
   },
   description: String,
   website: String,
-  configWalletAddress: {
-    type: String,
-    unique: true,
-  },
-  walletAddress: String,
+  configAddress: String,
+  wallet: String,
   password: {
     type: String,
     required: [true, "Please provide a password"],

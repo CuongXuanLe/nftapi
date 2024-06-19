@@ -16,14 +16,17 @@ const usersRouter = require("./routes/usersRoute");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+// Setting up CORS
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+app.options("*", cors(corsOptions));
 
 app.use(express.json({ limit: "10kb" }));
 app.use(mongoSanitize());
@@ -86,6 +89,16 @@ app.post("/upload", upload.single("file"), (req, res) => {
 
 app.use("/api/v1/nfts", nftsRouter);
 app.use("/api/v1/users", usersRouter);
+
+app.all("/*", function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
+  next();
+});
 
 // handle no existing urls
 app.all("*", (req, res, next) => {
